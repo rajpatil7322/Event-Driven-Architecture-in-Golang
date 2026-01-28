@@ -14,7 +14,7 @@ COPY .. ./
 # Build the binary.
 RUN go build -ldflags="-s -w" -v -o monolith ./cmd/mallbots
 
-FROM alpine:latest AS runtime
+FROM alpine:3.23.3 AS runtime
 
 COPY --from=builder /mallbots/docker/wait-for .
 RUN chmod +x /wait-for
