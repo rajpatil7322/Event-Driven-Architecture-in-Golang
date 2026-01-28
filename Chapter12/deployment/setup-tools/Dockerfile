@@ -19,7 +19,7 @@ RUN set -ex; \
     ./aws/install --bin-dir /aws-cli-bin; \
     /aws-cli-bin/aws --version
 
-FROM alpine as terraform-installer
+FROM alpine:3.23.3 as terraform-installer
 
 ARG TERRAFORM_VERSION="1.2.9"
 
@@ -27,7 +27,7 @@ RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip; \
     mv terraform /usr/local/bin
 
-FROM alpine as helm-installer
+FROM alpine:3.23.3 as helm-installer
 
 ARG HELM_VERSION="3.9.4"
 
@@ -35,7 +35,7 @@ RUN wget https://get.helm.sh/helm-v${HELM_VERSION}-linux-arm64.tar.gz; \
     tar -zxvf helm-v${HELM_VERSION}-linux-arm64.tar.gz; \
     mv linux-arm64/helm /usr/local/bin
 
-FROM alpine as k8s-installer
+FROM alpine:3.23.3 as k8s-installer
 
 RUN apk update; \
     apk add k9s
@@ -45,7 +45,7 @@ RUN apk add curl; \
     chmod +x kubectl; \
     mv kubectl /usr/local/bin
 
-FROM alpine
+FROM alpine:3.23.3
 
 COPY --from=aws-builder /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=aws-builder /aws-cli-bin/ /usr/local/bin/
